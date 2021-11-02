@@ -10,8 +10,12 @@ window.addEventListener("DOMContentLoaded", function () {
   const vm = new Vue({
     el: "#root",
     data: {
+      tabs: ["Crea", "Filtra"],
+      selectedTabIndex: 0,
       inputTask: "",
       inputColor: "#ff0000",
+      inputIsValid: true,
+      invalidFeedback: "",
       tasksList: [
         {
           text: "Fare la spesa",
@@ -34,10 +38,18 @@ window.addEventListener("DOMContentLoaded", function () {
           color: "#ff0000",
         },
       ],
-      inputIsValid: true,
-      invalidFeedback: "",
+
+      inputSearch: "",
+      filteredList: [],
     },
     methods: {
+      selectTab(tabIndex) {
+        this.selectedTabIndex = tabIndex;
+        filterTasks();
+      },
+      isSelectedTab(tabIndex) {
+        return this.selectedTabIndex === tabIndex;
+      },
       createTask(inputText) {
         return {
           text: inputText,
@@ -62,6 +74,11 @@ window.addEventListener("DOMContentLoaded", function () {
       },
       onClickCloseTask(i) {
         this.tasksList.splice(i, 1);
+      },
+      filterTasks() {
+        this.filteredList = this.tasksList.filter((el) =>
+          el.text.toLowerCase().includes(this.inputSearch.toLowerCase())
+        );
       },
     },
   });

@@ -21,44 +21,83 @@
   <body>
     <div id="root" class="container">
       <h1 class="pt-5 text-center">HELLO Vueoolean - Todolist</h1>
-      <div class="input-group pt-4 pb-5">
-        <input type="color" class="form-control" v-model="inputColor">
-        <input
-          type="text"
-          class="form-control"
-          :class="{'is-invalid' : !inputIsValid}"
-          placeholder="Vorrei..."
-          v-model="inputTask"
-          @keyup.enter="onClickAddTask"
-          @input="inputIsValid = true"
-        />
-        <button
-          class="btn btn-outline-primary btn-add"
-          type="button"
-          @click="onClickAddTask"
-        >
-          Aggiungi
-        </button>
-        <div class="invalid-feedback">{{invalidFeedback}}</div>
-      </div>
-      <h3 v-if="tasksList.length === 0" class="text-center">
-        &#8593 Inserisci un nuovo task &#8593
-      </h3>
-      <div class="list-group">
-        <label
-          v-for="task, i in tasksList"
-          class="list-group-item d-flex gap-3 single-todo" 
-          :class=" {'checked' : task.checked} "
-          :style="{'border-left-color': task.color}"
-        >
-          <input class="form-check-input me-1" type="checkbox" v-model="task.checked">
-          {{task.text}}
+      <nav>
+        <ul class="pagination justify-content-center pt-3">
+          <li v-for="tabLabel, i in tabs" class="page-item" :class="{'active': isSelectedTab(i)}">
+            <button class="page-link" @click="selectTab(i)">{{tabLabel}}</button>
+          </li>
+        </ul>
+      </nav>
+
+      <div v-if="selectedTabIndex === 0">
+        <div class="input-group pt-4 pb-5">
+          <input type="color" class="form-control" v-model="inputColor">
+          <input
+            type="text"
+            class="form-control"
+            :class="{'is-invalid' : !inputIsValid}"
+            placeholder="Vorrei..."
+            v-model="inputTask"
+            @keyup.enter="onClickAddTask"
+            @input="inputIsValid = true"
+          />
           <button
+            class="btn btn-outline-primary btn-add"
             type="button"
-            class="btn-close ms-auto"
-            @click="onClickCloseTask(i)"
-          ></button>
-        </label>
+            @click="onClickAddTask"
+          >
+            Aggiungi
+          </button>
+          <div class="invalid-feedback">{{invalidFeedback}}</div>
+        </div>
+        <h3 v-if="tasksList.length === 0" class="text-center">
+          &#8593 Inserisci un nuovo task &#8593
+        </h3>
+        <div class="list-group">
+          <label
+            v-for="task, i in tasksList"
+            class="list-group-item d-flex gap-3 single-todo" 
+            :class=" {'checked' : task.checked} "
+            :style="{'border-left-color': task.color}"
+          >
+            <input class="form-check-input me-1" type="checkbox" v-model="task.checked">
+            {{task.text}}
+            <button
+              type="button"
+              class="btn-close ms-auto"
+              @click="onClickCloseTask(i)"
+            ></button>
+          </label>
+        </div>
+      </div>
+
+      <div v-if="selectedTabIndex === 1">
+        <div class="input-group pt-4 pb-5">
+          <input type="color" class="form-control" v-model="inputColor">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Cerca..."
+            v-model="inputSearch"
+            @input="filterTasks"
+          />
+        </div>
+        <div class="list-group">
+          <label
+            v-for="task, i in filteredList"
+            class="list-group-item d-flex gap-3 single-todo" 
+            :class=" {'checked' : task.checked} "
+            :style="{'border-left-color': task.color}"
+          >
+            <input class="form-check-input me-1" type="checkbox" v-model="task.checked">
+            {{task.text}}
+            <button
+              type="button"
+              class="btn-close ms-auto"
+              @click="onClickCloseTask(i)"
+            ></button>
+          </label>
+        </div>
       </div>
     </div>
   </body>
