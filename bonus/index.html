@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- font-awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
     <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -11,6 +16,11 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
     <!-- My Css -->
     <link rel="stylesheet" href="css/style.css" />
     <!-- VUE -->
@@ -23,15 +33,46 @@
       <h1 class="pt-5 text-center">HELLO Vueoolean - Todolist</h1>
       <nav>
         <ul class="pagination justify-content-center pt-3">
-          <li v-for="tabLabel, i in tabs" class="page-item" :class="{'active': isSelectedTab(i)}">
-            <button class="page-link" @click="selectTab(i)">{{tabLabel}}</button>
+          <li
+            v-for="tabLabel, i in tabs"
+            class="page-item"
+            :class="{'active': isSelectedTab(i)}"
+          >
+            <button class="page-link" @click="selectTab(i)">
+              {{tabLabel}}
+            </button>
           </li>
         </ul>
       </nav>
 
       <div v-if="selectedTabIndex === 0">
         <div class="input-group pt-4 pb-5">
-          <input type="color" class="form-control" v-model="inputColor">
+          <button
+            class="btn btn-outline-custom dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            :style="{'--color': selectedTag.color}"
+          >
+            {{selectedTag.name}}
+          </button>
+          <ul class="dropdown-menu">
+            <li v-for="tag, i in tagsList">
+              <button
+                @click="onClickSelectTag(i)"
+                class="dropdown-item d-flex align-items-center gap-3"
+              >
+                <i class="fas fa-circle" :style="{'color': tag.color}"></i>
+                {{tag.name}}
+              </button>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <button class="dropdown-item d-flex align-items-center gap-3">
+                <i class="fas fa-plus-circle"></i>
+                Nuovo tag
+              </button>
+            </li>
+          </ul>
           <input
             type="text"
             class="form-control"
@@ -51,29 +92,53 @@
           <div class="invalid-feedback">{{invalidFeedback}}</div>
         </div>
         <h3 v-if="tasksList.length === 0" class="text-center">
-          &#8593 Inserisci un nuovo task &#8593
+          &#8593; Inserisci un nuovo task &#8593;
         </h3>
         <div class="list-group">
-          <label
+          <div
             v-for="task, i in tasksList"
-            class="list-group-item d-flex gap-3 single-todo" 
+            class="list-group-item d-flex single-todo"
             :class=" {'checked' : task.checked} "
             :style="{'border-left-color': task.color}"
           >
-            <input class="form-check-input me-1" type="checkbox" v-model="task.checked">
-            {{task.text}}
+            <label class="d-flex gap-3 flex-grow-1">
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                v-model="task.checked"
+              />
+              {{task.text}}
+            </label>
             <button
               type="button"
-              class="btn-close ms-auto"
+              class="btn-close flex-grow-0"
               @click="onClickCloseTask(i)"
             ></button>
-          </label>
+          </div>
         </div>
       </div>
 
       <div v-if="selectedTabIndex === 1">
         <div class="input-group pt-4 pb-5">
-          <input type="color" class="form-control" v-model="inputColor">
+          <button
+            class="btn btn-outline-custom dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            :style="{'--color': selectedTag.color}"
+          >
+            {{selectedTag.name}}
+          </button>
+          <ul class="dropdown-menu">
+            <li v-for="tag, i in tagsList">
+              <button
+                @click="onClickSelectFilterTag(i)"
+                class="dropdown-item d-flex align-items-center gap-3"
+              >
+                <i class="fas fa-circle" :style="{'color': tag.color}"></i>
+                {{tag.name}}
+              </button>
+            </li>
+          </ul>
           <input
             type="text"
             class="form-control"
@@ -82,21 +147,27 @@
             @input="filterTasks"
           />
         </div>
-        <div class="list-group">
-          <label
+        <div class="list-group d-flex">
+          <div
             v-for="task, i in filteredList"
-            class="list-group-item d-flex gap-3 single-todo" 
+            class="list-group-item single-todo d-flex"
             :class=" {'checked' : task.checked} "
             :style="{'border-left-color': task.color}"
           >
-            <input class="form-check-input me-1" type="checkbox" v-model="task.checked">
-            {{task.text}}
+            <label class="d-flex gap-3 flex-grow-1">
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                v-model="task.checked"
+              />
+              {{task.text}}
+            </label>
             <button
               type="button"
-              class="btn-close ms-auto"
-              @click="onClickCloseTask(i)"
+              class="btn-close flex-grow-0"
+              @click="onClickCloseFilteredTask(i)"
             ></button>
-          </label>
+          </div>
         </div>
       </div>
     </div>

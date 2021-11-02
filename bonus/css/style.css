@@ -27,3 +27,14 @@ input[type="color"] {
   border-top-right-radius: 0.25rem !important;
   border-bottom-right-radius: 0.25rem !important;
 }
+
+.btn-outline-custom {
+  color: var(--color);
+  border-color: var(--color);
+}
+
+.btn-outline-custom:hover {
+  color: #fff;
+  background-color: var(--color);
+  border-color: var(--color);
+}
