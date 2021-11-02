@@ -19,8 +19,43 @@
     <title>Vue To Do List</title>
   </head>
   <body>
-    <div id="root">
-      <h1 class="text-center">HELLO Vueoolean - Todolist</h1>
+    <div id="root" class="container">
+      <h1 class="pt-5 text-center">HELLO Vueoolean - Todolist</h1>
+      <div class="input-group pt-4 pb-5">
+        <input
+          type="text"
+          class="form-control"
+          :class="inputIsValid ? '' : 'is-invalid'"
+          placeholder="Vorrei..."
+          v-model="inputTask"
+          @keyup.enter="onClickAddTask"
+          @input="inputIsValid = true"
+        />
+        <button
+          class="btn btn-outline-primary"
+          type="button"
+          @click="onClickAddTask"
+        >
+          Aggiungi
+        </button>
+        <div class="invalid-feedback">{{invalidFeedback}}</div>
+      </div>
+      <h3 v-if="tasksList.length === 0" class="text-center">
+        &#8593 Inserisci un nuovo task &#8593
+      </h3>
+      <ul class="list-group">
+        <li
+          v-for="task, i in tasksList"
+          class="list-group-item d-flex single-todo"
+        >
+          {{task}}
+          <button
+            type="button"
+            class="btn-close ms-auto"
+            @click="onClickCloseTask(i)"
+          ></button>
+        </li>
+      </ul>
     </div>
   </body>
 </html>

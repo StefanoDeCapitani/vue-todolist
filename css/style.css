@@ -5,3 +5,8 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.single-todo {
+  border-left: 6px solid red;
+  font-size: 1.3rem;
+}
