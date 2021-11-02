@@ -1,0 +1,29 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input[type="color"] {
+  height: var(--bs-body-line-height);
+}
+
+.input-group > input[type="color"].form-control {
+  flex: 0 1 10%;
+}
+
+.single-todo {
+  border-left: 6px solid;
+  font-size: 1.3rem;
+}
+
+.single-todo.checked {
+  text-decoration: line-through;
+}
+
+.btn-add {
+  border-top-right-radius: 0.25rem !important;
+  border-bottom-right-radius: 0.25rem !important;
+}
