@@ -17,10 +17,10 @@ window.addEventListener("DOMContentLoaded", function () {
     methods: {
       onClickAddTask() {
         taskIsDuplicate = this.tasksList.some(
-          (el) => el.toLowerCase() === this.inputTask.toLowerCase()
+          (el) => el.toLowerCase() === this.inputTask.toLowerCase().trim()
         );
         if (this.inputTask && !taskIsDuplicate) {
-          this.tasksList.push(this.inputTask);
+          this.tasksList.push(this.inputTask.trim());
           this.inputTask = "";
         } else {
           this.inputIsValid = false;
