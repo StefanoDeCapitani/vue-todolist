@@ -38,3 +38,8 @@ input[type="color"] {
   background-color: var(--color);
   border-color: var(--color);
 }
+
+#input-tag-color {
+  height: 2.4rem;
+  padding: 0.25rem;
+}
